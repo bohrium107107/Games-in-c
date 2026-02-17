@@ -145,7 +145,7 @@ void drawMenu()
 {
     ClearBackground(RAYWHITE);
 
-    drawCentered("Strategic Tic Tac Toe",120,70,VIOLET);
+    drawCentered("Strategic Tic Tac Toe",120,70,DARKPURPLE);
 
     drawCentered("RULES:",240,30,MAROON);
     drawCentered("Win small boards to claim them.",270,25,BLACK);
@@ -357,6 +357,40 @@ void drawWinLine()
                    8, DARKGREEN);
 }
 
+void drawGameOver()
+{
+    if(!gameOver) return;
+
+    DrawRectangle(
+        200,
+        UI_HEIGHT + 330,
+        500,
+        150,
+        Fade(BLACK, 0.8f)
+    );
+
+    if(gameMode == MODE_NORMAL)
+        drawCentered(TextFormat("Player %c Wins!", winner),
+                     UI_HEIGHT + 360,
+                     32,
+                     WHITE);
+    else
+        drawCentered(TextFormat("Player %c Loses!", winner),
+                     UI_HEIGHT + 360,
+                     32,
+                     WHITE);
+
+    drawCentered("Press R to Restart",
+                 UI_HEIGHT + 400,
+                 20,
+                 WHITE);
+
+    drawCentered("Press M for Menu",
+                 UI_HEIGHT + 430,
+                 20,
+                 WHITE);
+}
+
 
 /* ========= MAIN ========= */
 
@@ -432,8 +466,12 @@ int main()
                 /* Big win */
                 if(checkBigWin())
                 {
-                    gameOver = 1;
-                    winner = currentPlayer;
+                     gameOver = 1;
+
+                    if(gameMode == MODE_NORMAL)
+                        winner = currentPlayer;
+                    else
+                        winner = currentPlayer;
                 }
 
                 if(gameState == STATE_PLAYING && !gameOver)
@@ -515,6 +553,20 @@ if(swapAnimating)
     }
 }
 
+if(gameOver)
+{
+    if(IsKeyPressed(KEY_R))
+    {
+        initialize();
+        gameState = STATE_PLAYING;
+    }
+
+    if(IsKeyPressed(KEY_M))
+    {
+        gameState = STATE_MENU;
+        gameOver = 0;
+    }
+}
 
         BeginDrawing();
 
@@ -528,6 +580,8 @@ if(swapAnimating)
             drawBigBoardMarks();
             drawMarks();
             drawWinLine();
+            drawGameOver();
+
         }
 
         EndDrawing();
