@@ -172,7 +172,17 @@ void drawUI()
 }
 
 void drawBoard()
+{if(!freeMove && nextRow >= 0 && nextCol >= 0)
 {
+    DrawRectangle(
+        nextCol * 300,
+        nextRow * 300 + UI_HEIGHT,
+        300,
+        300,
+        Fade(YELLOW, 0.25f)
+    );
+}
+
     for(int i=0;i<=9;i++)
     {
         if(i%3!=0)
@@ -252,7 +262,7 @@ void drawWinLine()
 
 int main()
 {
-    InitWindow(SCREEN_SIZE,SCREEN_SIZE,
+    InitWindow(SCREEN_SIZE,SCREEN_SIZE + UI_HEIGHT,
                "Strategic Tic Tac Toe");
     SetTargetFPS(60);
 
