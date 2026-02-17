@@ -172,37 +172,65 @@ void drawUI()
 }
 
 void drawBoard()
-{if(!freeMove && nextRow >= 0 && nextCol >= 0)
 {
-    DrawRectangle(
-        nextCol * 300,
-        nextRow * 300 + UI_HEIGHT,
-        300,
-        300,
-        Fade(YELLOW, 0.25f)
-    );
-}
-for(int i = 0; i <= 9; i += 3)
-{
-    // Vertical thick
-    DrawRectangle(
-        i * CELL_SIZE - 2,
-        UI_HEIGHT,
-        4,
-        SCREEN_SIZE,
-        BLACK
-    );
+    /* ---- Forced Board Highlight ---- */
+    if(!freeMove && nextRow >= 0 && nextCol >= 0)
+    {
+        DrawRectangle(
+            nextCol * 300,
+            UI_HEIGHT + nextRow * 300,
+            300,
+            300,
+            Fade(YELLOW, 0.25f)
+        );
+    }
 
-    // Horizontal thick
-    DrawRectangle(
-        0,
-        UI_HEIGHT + i * CELL_SIZE - 2,
-        SCREEN_SIZE,
-        4,
-        BLACK
-    );
-}
+    /* ---- Thin Lines ---- */
+    for(int i = 0; i <= 9; i++)
+    {
+        if(i % 3 != 0)
+        {
+            // vertical
+            DrawLine(
+                i * CELL_SIZE,
+                UI_HEIGHT,
+                i * CELL_SIZE,
+                UI_HEIGHT + SCREEN_SIZE,
+                BLACK
+            );
 
+            // horizontal
+            DrawLine(
+                0,
+                UI_HEIGHT + i * CELL_SIZE,
+                SCREEN_SIZE,
+                UI_HEIGHT + i * CELL_SIZE,
+                BLACK
+            );
+        }
+    }
+
+    /* ---- Thick Lines ---- */
+    for(int i = 0; i <= 9; i += 3)
+    {
+        // vertical thick
+        DrawRectangle(
+            i * CELL_SIZE - 2,
+            UI_HEIGHT,
+            4,
+            SCREEN_SIZE,
+            BLACK
+        );
+
+        // horizontal thick
+        DrawRectangle(
+            0,
+            UI_HEIGHT + i * CELL_SIZE - 2,
+            SCREEN_SIZE,
+            4,
+            BLACK
+        );
+    }
 }
 
 void drawMarks()
@@ -232,6 +260,51 @@ void drawMarks()
                     }
                 }
 }
+
+void drawBigBoardMarks()
+{
+    for(int br = 0; br < 3; br++)
+    {
+        for(int bc = 0; bc < 3; bc++)
+        {
+            if(bb[br][bc] == 'X' || bb[br][bc] == 'O')
+            {
+                int startX = bc * 300;
+                int startY = UI_HEIGHT + br * 300;
+                int padding = 40;
+
+                if(bb[br][bc] == 'X')
+                {
+                    DrawLineEx(
+                        (Vector2){startX + padding, startY + padding},
+                        (Vector2){startX + 300 - padding, startY + 300 - padding},
+                        10,
+                        MAROON
+                    );
+
+                    DrawLineEx(
+                        (Vector2){startX + 300 - padding, startY + padding},
+                        (Vector2){startX + padding, startY + 300 - padding},
+                        10,
+                        MAROON
+                    );
+                }
+                else
+                {
+                    DrawRing(
+                        (Vector2){startX + 150, startY + 150},
+                        100 - 12,
+                        100,
+                        0, 360,
+                        64,
+                        DARKBLUE
+                    );
+                }
+            }
+        }
+    }
+}
+
 
 void drawWinLine()
 {
