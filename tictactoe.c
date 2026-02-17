@@ -173,6 +173,30 @@ void drawUI()
 
 void drawBoard()
 {
+    /* ---- Swap Source Highlight ---- */
+if(gameState == STATE_SWAP)
+{
+    DrawRectangle(
+        swapSourceCol * 300,
+        UI_HEIGHT + swapSourceRow * 300,
+        300,
+        300,
+        Fade(GREEN, 0.35f)
+    );
+}
+
+/* ---- Swap Target Highlight (animation) ---- */
+if(swapAnimating)
+{
+    DrawRectangle(
+        swapTargetCol * 300,
+        UI_HEIGHT + swapTargetRow * 300,
+        300,
+        300,
+        Fade(LIME, 0.45f)
+    );
+}
+
     /* ---- Forced Board Highlight ---- */
     if(!freeMove && nextRow >= 0 && nextCol >= 0)
     {
@@ -501,6 +525,7 @@ if(swapAnimating)
             ClearBackground(RAYWHITE);
             drawUI();
             drawBoard();
+            drawBigBoardMarks();
             drawMarks();
             drawWinLine();
         }
