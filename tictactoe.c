@@ -182,27 +182,27 @@ void drawBoard()
         Fade(YELLOW, 0.25f)
     );
 }
+for(int i = 0; i <= 9; i += 3)
+{
+    // Vertical thick
+    DrawRectangle(
+        i * CELL_SIZE - 2,
+        UI_HEIGHT,
+        4,
+        SCREEN_SIZE,
+        BLACK
+    );
 
-    for(int i=0;i<=9;i++)
-    {
-        if(i%3!=0)
-        {
-            DrawLine(i*CELL_SIZE,UI_HEIGHT,
-                     i*CELL_SIZE,SCREEN_SIZE,BLACK);
+    // Horizontal thick
+    DrawRectangle(
+        0,
+        UI_HEIGHT + i * CELL_SIZE - 2,
+        SCREEN_SIZE,
+        4,
+        BLACK
+    );
+}
 
-            DrawLine(0,i*CELL_SIZE+UI_HEIGHT,
-                     SCREEN_SIZE,i*CELL_SIZE+UI_HEIGHT,BLACK);
-        }
-    }
-
-    for(int i=0;i<=9;i+=3)
-    {
-        DrawRectangle(i*CELL_SIZE,UI_HEIGHT,
-                      4,SCREEN_SIZE-UI_HEIGHT,BLACK);
-
-        DrawRectangle(0,i*CELL_SIZE+UI_HEIGHT,
-                      SCREEN_SIZE,4,BLACK);
-    }
 }
 
 void drawMarks()
@@ -237,26 +237,29 @@ void drawWinLine()
 {
     if(!gameOver || winner==EMPTY) return;
 
+    int bottom = UI_HEIGHT + SCREEN_SIZE;
+
     if(winLineType==0) // row
-        DrawLineEx((Vector2){0,UI_HEIGHT+winLineIndex*300+150},
-                   (Vector2){900,UI_HEIGHT+winLineIndex*300+150},
-                   8,DARKGREEN);
+        DrawLineEx((Vector2){0, UI_HEIGHT + winLineIndex*300 + 150},
+                   (Vector2){SCREEN_SIZE, UI_HEIGHT + winLineIndex*300 + 150},
+                   8, DARKGREEN);
 
     else if(winLineType==1) // col
-        DrawLineEx((Vector2){winLineIndex*300+150,UI_HEIGHT},
-                   (Vector2){winLineIndex*300+150,900},
-                   8,DARKGREEN);
+        DrawLineEx((Vector2){winLineIndex*300 + 150, UI_HEIGHT},
+                   (Vector2){winLineIndex*300 + 150, bottom},
+                   8, DARKGREEN);
 
     else if(winLineType==2)
-        DrawLineEx((Vector2){0,UI_HEIGHT},
-                   (Vector2){900,900},
-                   8,DARKGREEN);
+        DrawLineEx((Vector2){0, UI_HEIGHT},
+                   (Vector2){SCREEN_SIZE, bottom},
+                   8, DARKGREEN);
 
     else if(winLineType==3)
-        DrawLineEx((Vector2){900,UI_HEIGHT},
-                   (Vector2){0,900},
-                   8,DARKGREEN);
+        DrawLineEx((Vector2){SCREEN_SIZE, UI_HEIGHT},
+                   (Vector2){0, bottom},
+                   8, DARKGREEN);
 }
+
 
 /* ========= MAIN ========= */
 
