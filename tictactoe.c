@@ -274,8 +274,137 @@ int main()
             }
         }
 
-        /* Input handling for PLAYING and SWAP omitted for brevity */
-        /* (Use the stable swap logic from previous version exactly) */
+       if(gameState == STATE_PLAYING && !gameOver)
+{
+    if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
+    {
+        Vector2 mouse = GetMousePosition();
+
+        int gRow = (mouse.y - UI_HEIGHT) / CELL_SIZE;
+        int gCol = mouse.x / CELL_SIZE;
+
+        if(gRow >= 0 && gRow < 9 && gCol >= 0 && gCol < 9)
+        {
+            int sbRow = gRow / 3;
+            int sbCol = gCol / 3;
+            int cRow  = gRow % 3;
+            int cCol  = gCol % 3;
+
+            int valid = freeMove ||
+                        (sbRow == nextRow && sbCol == nextCol);
+
+            if(valid &&
+               sb[sbRow][sbCol][cRow][cCol] == EMPTY)
+            {
+                sb[sbRow][sbCol][cRow][cCol] = currentPlayer;
+
+                /* Small win */
+                if(checkSmallWin(sbRow, sbCol))
+                {
+                    bb[sbRow][sbCol] = currentPlayer;
+
+                    int canSwap =
+                        (currentPlayer == 'X' && !xSwapUsed) ||
+                        (currentPlayer == 'O' && !oSwapUsed);
+
+                    if(canSwap)
+                    {
+                        swapSourceRow = sbRow;
+                        swapSourceCol = sbCol;
+                        gameState = STATE_SWAP;
+                    }
+                }
+
+                nextRow = cRow;
+                nextCol = cCol;
+                freeMove = (bb[nextRow][nextCol] != EMPTY);
+
+                /* Big win */
+                if(checkBigWin())
+                {
+                    gameOver = 1;
+                    winner = currentPlayer;
+                }
+
+                if(gameState == STATE_PLAYING && !gameOver)
+                    currentPlayer =
+                        (currentPlayer == 'X') ? 'O' : 'X';
+            }
+        }
+    }
+}
+
+if(gameState == STATE_SWAP)
+{
+    if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
+    {
+        Vector2 mouse = GetMousePosition();
+
+        int tr = (mouse.y - UI_HEIGHT) / 300;
+        int tc = mouse.x / 300;
+
+        if(tr >= 0 && tr < 3 &&
+           tc >= 0 && tc < 3 &&
+           !(tr == swapSourceRow &&
+             tc == swapSourceCol))
+        {
+            swapTargetRow = tr;
+            swapTargetCol = tc;
+            swapAnimating = 1;
+            swapTimer = 0;
+        }
+    }
+}
+
+if(swapAnimating)
+{
+    swapTimer += GetFrameTime();
+
+    if(swapTimer >= swapDuration)
+    {
+        /* Swap bb */
+        char tempBB =
+            bb[swapTargetRow][swapTargetCol];
+        bb[swapTargetRow][swapTargetCol] =
+            bb[swapSourceRow][swapSourceCol];
+        bb[swapSourceRow][swapSourceCol] = tempBB;
+
+        /* Swap sb */
+        for(int r=0;r<3;r++)
+            for(int c=0;c<3;c++)
+            {
+                char t =
+                    sb[swapTargetRow][swapTargetCol][r][c];
+                sb[swapTargetRow][swapTargetCol][r][c] =
+                    sb[swapSourceRow][swapSourceCol][r][c];
+                sb[swapSourceRow][swapSourceCol][r][c] = t;
+            }
+
+        if(currentPlayer == 'X')
+            xSwapUsed = 1;
+        else
+            oSwapUsed = 1;
+
+        if(checkBigWin())
+        {
+            gameOver = 1;
+            winner = currentPlayer;
+        }
+
+        /* Reset forced move after swap */
+        nextRow = -1;
+        nextCol = -1;
+        freeMove = 1;
+
+        swapAnimating = 0;
+        gameState = STATE_PLAYING;
+
+        if(!gameOver)
+            currentPlayer =
+                (currentPlayer == 'X') ? 'O' : 'X';
+    }
+}
+
 
         BeginDrawing();
 
