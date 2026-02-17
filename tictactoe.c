@@ -145,16 +145,16 @@ void drawMenu()
 {
     ClearBackground(RAYWHITE);
 
-    drawCentered("Strategic Tic Tac Toe",120,40,BLACK);
+    drawCentered("Strategic Tic Tac Toe",120,70,VIOLET);
 
-    drawCentered("RULES:",200,28,DARKGRAY);
-    drawCentered("Win small boards to claim them.",240,20,BLACK);
-    drawCentered("You must play in the forced board.",270,20,BLACK);
-    drawCentered("Each player gets ONE swap per game.",300,20,MAROON);
-    drawCentered("Misere Mode: 3 in a row loses.",330,20,BLUE);
+    drawCentered("RULES:",240,30,MAROON);
+    drawCentered("Win small boards to claim them.",270,25,BLACK);
+    drawCentered("You must play in the forced board.",300,25,BLACK);
+    drawCentered("Each player gets ONE swap per game.",330,25,BLACK);
+    drawCentered("Misere Mode: 3 in a row loses.",360,25,BLACK);
 
-    drawCentered("Press 1 - Normal Mode",420,28,DARKGREEN);
-    drawCentered("Press 2 - Misere Mode",460,28,MAROON);
+    drawCentered("Press 1 - Normal Mode",420,29,DARKGREEN);
+    drawCentered("Press 2 - Misere Mode",460,29,BLUE);
 }
 
 void drawUI()
@@ -280,7 +280,7 @@ void drawMarks()
                     else
                     {
                         DrawRing((Vector2){x+50,y+50},
-                                 30,40,0,360,64,BLUE);
+                                 30,36,0,360,64,BLUE);
                     }
                 }
 }
