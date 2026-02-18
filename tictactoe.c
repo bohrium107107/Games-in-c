@@ -374,7 +374,7 @@ void drawGameOver()
                      UI_HEIGHT + 360,
                      32,
                      WHITE);
-    else
+    else if(gameMode == MODE_MISERE)
         drawCentered(TextFormat("Player %c Loses!", winner),
                      UI_HEIGHT + 360,
                      32,
