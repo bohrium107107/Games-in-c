@@ -389,21 +389,20 @@ void drawGameOver()
         150,
         Fade(BLACK, 0.8f)
     );
-    if(winner == '.')
-        drawCentered(TextFormat("DRAW"),
-                     UI_HEIGHT + 360,
-                     32,
-                     WHITE);
-    else if(gameMode == MODE_NORMAL)
-        drawCentered(TextFormat("Player %c Wins!", winner),
-                     UI_HEIGHT + 360,
-                     32,
-                     WHITE);
-    else if(gameMode == MODE_MISERE)
-        drawCentered(TextFormat("Player %c Loses!", winner),
-                     UI_HEIGHT + 360,
-                     32,
-                     WHITE);
+    if(winner == EMPTY)
+{
+    drawCentered("DRAW",
+                 UI_HEIGHT + 360,
+                 32,
+                 WHITE);
+}
+else
+{
+    drawCentered(TextFormat("Player %c Wins!", winner),
+                 UI_HEIGHT + 360,
+                 32,
+                 WHITE);
+}
 
     drawCentered("Press R to Restart",
                  UI_HEIGHT + 400,
