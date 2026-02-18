@@ -133,6 +133,27 @@ int checkBigWin()
     return 0;
 }
 
+int checkBigFull()
+{
+    for(int r = 0; r < 3; r++)
+        for(int c = 0; c < 3; c++)
+            if(bb[r][c] == EMPTY)
+                return 0;
+
+    return 1;
+}
+
+int checkSmallFull(int sr, int sc)
+{
+    for(int r=0;r<3;r++)
+        for(int c=0;c<3;c++)
+            if(sb[sr][sc][r][c] == EMPTY)
+                return 0;
+
+    return 1;
+}
+
+
 /* ========= DRAWING ========= */
 
 void drawCentered(const char* text,int y,int size,Color color)
@@ -368,8 +389,12 @@ void drawGameOver()
         150,
         Fade(BLACK, 0.8f)
     );
-
-    if(gameMode == MODE_NORMAL)
+    if(winner == '.')
+        drawCentered(TextFormat("DRAW"),
+                     UI_HEIGHT + 360,
+                     32,
+                     WHITE);
+    else if(gameMode == MODE_NORMAL)
         drawCentered(TextFormat("Player %c Wins!", winner),
                      UI_HEIGHT + 360,
                      32,
@@ -458,21 +483,34 @@ int main()
                         gameState = STATE_SWAP;
                     }
                 }
+                else if(checkSmallFull(sbRow, sbCol))
+{
+    bb[sbRow][sbCol] = 'D';   // mark small board as draw
+}
 
                 nextRow = cRow;
                 nextCol = cCol;
-                freeMove = (bb[nextRow][nextCol] != EMPTY);
+                if(bb[nextRow][nextCol] == EMPTY)
+    freeMove = 0;
+else
+    freeMove = 1;
 
                 /* Big win */
                 if(checkBigWin())
-                {
-                     gameOver = 1;
+{
+    gameOver = 1;
 
-                    if(gameMode == MODE_NORMAL)
-                        winner = currentPlayer;
-                    else
-                        winner = currentPlayer;
-                }
+    if(gameMode == MODE_NORMAL)
+        winner = currentPlayer;
+    else
+        winner = (currentPlayer == 'X') ? 'O' : 'X';
+}
+else if(checkBigFull())
+{
+    gameOver = 1;
+    winner = EMPTY;   // Means draw
+}
+
 
                 if(gameState == STATE_PLAYING && !gameOver)
                     currentPlayer =
