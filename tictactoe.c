@@ -40,10 +40,6 @@ float swapDuration = 0.35f;
 int winLineType = -1;  // 0=row,1=col,2=diag1,3=diag2
 int winLineIndex = -1;
 
-/* ========= TURN POPUP ========= */
-int showTurnPopup = 1;
-float turnPopupTimer = 0.0f;
-float turnPopupDuration = 1.2f;
 /* ========= SWAP POPUP ========= */
 int showSwapPopup = 0;
 float swapPopupTimer = 0.0f;
@@ -75,8 +71,6 @@ void initialize()
 
     winLineType = -1;
     winLineIndex = -1;
-     showTurnPopup = 1;
-turnPopupTimer = 0.0f;
 
 }
 
@@ -391,15 +385,6 @@ void drawWinLine()
 
 void drawGameOver()
 {
-    if(!gameOver) return;
-
-    DrawRectangle(
-        200,
-        UI_HEIGHT + 330,
-        500,
-        150,
-        Fade(BLACK, 0.8f)
-    );
     if(winner == EMPTY)
 {
     drawCentered("DRAW",
@@ -407,43 +392,22 @@ void drawGameOver()
                  32,
                  WHITE);
 }
-else
+else if(gameMode == MODE_NORMAL)
 {
     drawCentered(TextFormat("Player %c Wins!", winner),
                  UI_HEIGHT + 360,
                  32,
                  WHITE);
 }
-
-    drawCentered("Press R to Restart",
-                 UI_HEIGHT + 400,
-                 20,
-                 WHITE);
-
-    drawCentered("Press M for Menu",
-                 UI_HEIGHT + 430,
-                 20,
-                 WHITE);
-}
-void drawTurnPopup()
+else
 {
-    if(!showTurnPopup || gameOver) return;
-
-    DrawRectangle(
-        200,
-        UI_HEIGHT + 330,
-        500,
-        120,
-        Fade(BLACK, 0.75f)
-    );
-
-    drawCentered(
-        TextFormat("Player %c's Turn", currentPlayer),
-        UI_HEIGHT + 370,
-        35,
-        YELLOW
-    );
+    drawCentered(TextFormat("Player %c Loses!", winner),
+                 UI_HEIGHT + 360,
+                 32,
+                 WHITE);
 }
+}
+
 void drawSwapPopup()
 {
     if(!showSwapPopup) return;
@@ -540,12 +504,20 @@ int main()
     bb[sbRow][sbCol] = 'D';   // mark small board as draw
 }
 
-                nextRow = cRow;
-                nextCol = cCol;
-                if(bb[nextRow][nextCol] == EMPTY)
-    freeMove = 0;
-else
+nextRow = cRow;
+nextCol = cCol;
+
+/* If next board is won or drawn : free move */
+if(bb[nextRow][nextCol] != EMPTY)
+{
     freeMove = 1;
+    nextRow = -1;
+    nextCol = -1;
+}
+else
+{
+    freeMove = 0;
+}
 
                 /* Big win */
                 if(checkBigWin())
@@ -628,10 +600,14 @@ if(swapAnimating)
             oSwapUsed = 1;
 
         if(checkBigWin())
-        {
-            gameOver = 1;
-            winner = currentPlayer;
-        }
+{
+    gameOver = 1;
+
+    if(gameMode == MODE_NORMAL)
+        winner = currentPlayer;
+    else
+        winner = (currentPlayer == 'X') ? 'O' : 'X';
+}
 
         /* Reset forced move after swap */
         nextRow = -1;
@@ -664,14 +640,7 @@ if(gameOver)
         gameOver = 0;
     }
 }
-        /* -------- Turn Popup Timer -------- */
-if(showTurnPopup)
-{
-    turnPopupTimer += GetFrameTime();
 
-    if(turnPopupTimer >= turnPopupDuration)
-        showTurnPopup = 0;
-}
         /* -------- Swap Popup Timer -------- */
 if(showSwapPopup)
 {
@@ -693,7 +662,6 @@ if(showSwapPopup)
             drawBigBoardMarks();
             drawMarks();
             drawWinLine();
-            drawTurnPopup(); 
             drawSwapPopup();
             drawGameOver();
 
