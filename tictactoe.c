@@ -538,10 +538,12 @@ else if(checkBigFull())
 
 
                 if(gameState == STATE_PLAYING && !gameOver)
+                {
                     currentPlayer =
                         (currentPlayer == 'X') ? 'O' : 'X';
                          showTurnPopup = 1;
                          turnPopupTimer = 0.0f;
+                }
             }
         }
     }
@@ -612,11 +614,12 @@ if(swapAnimating)
         swapAnimating = 0;
         gameState = STATE_PLAYING;
 
-        if(!gameOver)
+        if(!gameOver){
             currentPlayer =
                 (currentPlayer == 'X') ? 'O' : 'X';
                 showTurnPopup = 1;
                 turnPopupTimer = 0.0f;
+        }
     }
 }
 
