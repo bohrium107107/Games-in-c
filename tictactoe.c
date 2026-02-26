@@ -619,8 +619,6 @@ if(swapAnimating)
         if(!gameOver){
             currentPlayer =
                 (currentPlayer == 'X') ? 'O' : 'X';
-                showTurnPopup = 1;
-                turnPopupTimer = 0.0f;
         }
     }
 }
