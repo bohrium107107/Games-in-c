@@ -40,6 +40,10 @@ float swapDuration = 0.35f;
 int winLineType = -1;  // 0=row,1=col,2=diag1,3=diag2
 int winLineIndex = -1;
 
+/* ========= TURN POPUP ========= */
+int showTurnPopup = 1;
+float turnPopupTimer = 0.0f;
+float turnPopupDuration = 1.2f;
 /* ========= INITIALIZE ========= */
 
 void initialize()
@@ -52,7 +56,7 @@ void initialize()
                 for(int cc=0;cc<3;cc++)
                     sb[br][bc][cr][cc] = EMPTY;
         }
-
+   
     currentPlayer = 'X';
     nextRow = nextCol = -1;
     freeMove = 1;
@@ -67,6 +71,9 @@ void initialize()
 
     winLineType = -1;
     winLineIndex = -1;
+     showTurnPopup = 1;
+turnPopupTimer = 0.0f;
+
 }
 
 /* ========= WIN CHECKS ========= */
@@ -414,6 +421,25 @@ else
                  20,
                  WHITE);
 }
+void drawTurnPopup()
+{
+    if(!showTurnPopup || gameOver) return;
+
+    DrawRectangle(
+        200,
+        UI_HEIGHT + 330,
+        500,
+        120,
+        Fade(BLACK, 0.75f)
+    );
+
+    drawCentered(
+        TextFormat("Player %c's Turn", currentPlayer),
+        UI_HEIGHT + 370,
+        35,
+        YELLOW
+    );
+}
 
 
 /* ========= MAIN ========= */
@@ -514,6 +540,8 @@ else if(checkBigFull())
                 if(gameState == STATE_PLAYING && !gameOver)
                     currentPlayer =
                         (currentPlayer == 'X') ? 'O' : 'X';
+                         showTurnPopup = 1;
+                         turnPopupTimer = 0.0f;
             }
         }
     }
@@ -587,6 +615,8 @@ if(swapAnimating)
         if(!gameOver)
             currentPlayer =
                 (currentPlayer == 'X') ? 'O' : 'X';
+                showTurnPopup = 1;
+                turnPopupTimer = 0.0f;
     }
 }
 
@@ -604,6 +634,14 @@ if(gameOver)
         gameOver = 0;
     }
 }
+        /* -------- Turn Popup Timer -------- */
+if(showTurnPopup)
+{
+    turnPopupTimer += GetFrameTime();
+
+    if(turnPopupTimer >= turnPopupDuration)
+        showTurnPopup = 0;
+}
 
         BeginDrawing();
 
@@ -617,6 +655,7 @@ if(gameOver)
             drawBigBoardMarks();
             drawMarks();
             drawWinLine();
+            drawTurnPopup(); 
             drawGameOver();
 
         }
