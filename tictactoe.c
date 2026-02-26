@@ -44,6 +44,10 @@ int winLineIndex = -1;
 int showTurnPopup = 1;
 float turnPopupTimer = 0.0f;
 float turnPopupDuration = 1.2f;
+/* ========= SWAP POPUP ========= */
+int showSwapPopup = 0;
+float swapPopupTimer = 0.0f;
+float swapPopupDuration = 1.5f;
 /* ========= INITIALIZE ========= */
 
 void initialize()
@@ -440,6 +444,26 @@ void drawTurnPopup()
         YELLOW
     );
 }
+void drawSwapPopup()
+{
+    if(!showSwapPopup) return;
+
+    DrawRectangle(
+        200,
+        UI_HEIGHT + 300,
+        500,
+        150,
+        Fade(BLACK, 0.8f)
+    );
+
+    drawCentered(
+        TextFormat("Player %c - Select Board to Swap",
+                   currentPlayer),
+        UI_HEIGHT + 340,
+        30,
+        ORANGE
+    );
+}
 
 
 /* ========= MAIN ========= */
@@ -506,6 +530,9 @@ int main()
                         swapSourceRow = sbRow;
                         swapSourceCol = sbCol;
                         gameState = STATE_SWAP;
+
+                        showSwapPopup = 1;
+                        swapPopupTimer = 0.0f;
                     }
                 }
                 else if(checkSmallFull(sbRow, sbCol))
@@ -645,6 +672,14 @@ if(showTurnPopup)
     if(turnPopupTimer >= turnPopupDuration)
         showTurnPopup = 0;
 }
+        /* -------- Swap Popup Timer -------- */
+if(showSwapPopup)
+{
+    swapPopupTimer += GetFrameTime();
+
+    if(swapPopupTimer >= swapPopupDuration)
+        showSwapPopup = 0;
+}
 
         BeginDrawing();
 
@@ -659,6 +694,7 @@ if(showTurnPopup)
             drawMarks();
             drawWinLine();
             drawTurnPopup(); 
+            drawSwapPopup();
             drawGameOver();
 
         }
