@@ -540,8 +540,7 @@ else if(checkBigFull())
                 {
                     currentPlayer =
                         (currentPlayer == 'X') ? 'O' : 'X';
-                         showTurnPopup = 1;
-                         turnPopupTimer = 0.0f;
+                         
                 }
             }
         }
