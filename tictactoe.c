@@ -11,6 +11,7 @@ Color thickLine = (Color){60, 60, 60, 255};
 
 Color xColor    = (Color){200, 50, 60, 255};
 Color oColor    = (Color){40, 110, 220, 255};
+Color ruleColor = (Color){70,70,90,255};
 
 /* ========= GAME STATES ========= */
 #define STATE_MENU 0
@@ -178,16 +179,22 @@ void drawMenu()
 {
     ClearBackground((Color){235, 238, 245, 255});
 
-    drawCentered("Strategic Tic Tac Toe",120,70,DARKPURPLE);
+    drawCentered("STRATEGIC TIC TAC TOE", 120, 60, DARKPURPLE);
 
-    drawCentered("RULES:",240,30,MAROON);
-    drawCentered("Win small boards to claim them.",270,25,BLACK);
-    drawCentered("You must play in the forced board.",300,25,BLACK);
-    drawCentered("Each player gets ONE swap per game.",330,25,BLACK);
-    drawCentered("Misere Mode: 3 in a row loses.",360,25,BLACK);
+    drawCentered("HOW TO PLAY", 230, 42, PURPLE);
 
-    drawCentered("Press 1 - Normal Mode",420,29,DARKGREEN);
-    drawCentered("Press 2 - Misere Mode",460,29,BLUE);
+drawCentered("i. Win a small board to claim it", 290, 30, ruleColor);
+drawCentered("ii. Your move decides the next board", 330, 30, ruleColor);
+drawCentered("iii. Each player gets ONE swap", 370, 30, ruleColor);
+drawCentered("iv. Misere Mode: 3 in a row loses", 410, 30, ruleColor);
+
+DrawLine(200, 450, 700, 450, (Color){180,180,200,255});
+
+   DrawRectangle(170, 470, 560, 150,
+              (Color){40,42,55,255});
+
+drawCentered("Press 1 - NORMAL MODE", 515, 34, (Color){90,230,130,255});
+drawCentered("Press 2 - MISERE MODE", 565, 34, (Color){230,90,90,255});
 }
 
 void drawUI()
