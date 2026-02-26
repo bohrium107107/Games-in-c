@@ -1,9 +1,16 @@
 #include "raylib.h"
+#include <stdio.h>
 
 #define SCREEN_SIZE 900
 #define UI_HEIGHT 70
 #define CELL_SIZE 100
 #define EMPTY '.'
+
+Color thinLine  = (Color){170, 170, 170, 255};
+Color thickLine = (Color){60, 60, 60, 255};
+
+Color xColor    = (Color){200, 50, 60, 255};
+Color oColor    = (Color){40, 110, 220, 255};
 
 /* ========= GAME STATES ========= */
 #define STATE_MENU 0
@@ -43,7 +50,7 @@ int winLineIndex = -1;
 /* ========= SWAP POPUP ========= */
 int showSwapPopup = 0;
 float swapPopupTimer = 0.0f;
-float swapPopupDuration = 1.5f;
+float swapPopupDuration = 2.5f;
 /* ========= INITIALIZE ========= */
 
 void initialize()
@@ -169,7 +176,7 @@ void drawCentered(const char* text,int y,int size,Color color)
 
 void drawMenu()
 {
-    ClearBackground(RAYWHITE);
+    ClearBackground((Color){235, 238, 245, 255});
 
     drawCentered("Strategic Tic Tac Toe",120,70,DARKPURPLE);
 
@@ -246,7 +253,7 @@ if(swapAnimating)
                 UI_HEIGHT,
                 i * CELL_SIZE,
                 UI_HEIGHT + SCREEN_SIZE,
-                BLACK
+                thinLine
             );
 
             // horizontal
@@ -255,7 +262,7 @@ if(swapAnimating)
                 UI_HEIGHT + i * CELL_SIZE,
                 SCREEN_SIZE,
                 UI_HEIGHT + i * CELL_SIZE,
-                BLACK
+                thinLine
             );
         }
     }
@@ -269,7 +276,7 @@ if(swapAnimating)
             UI_HEIGHT,
             4,
             SCREEN_SIZE,
-            BLACK
+            thickLine
         );
 
         // horizontal thick
@@ -278,7 +285,7 @@ if(swapAnimating)
             UI_HEIGHT + i * CELL_SIZE - 2,
             SCREEN_SIZE,
             4,
-            BLACK
+            thickLine
         );
     }
 }
@@ -299,14 +306,14 @@ void drawMarks()
                     if(m=='X')
                     {
                         DrawLineEx((Vector2){x+20,y+20},
-                                   (Vector2){x+80,y+80},5,RED);
+                                   (Vector2){x+80,y+80},5,xColor);
                         DrawLineEx((Vector2){x+80,y+20},
-                                   (Vector2){x+20,y+80},5,RED);
+                                   (Vector2){x+20,y+80},5,xColor);
                     }
                     else
                     {
                         DrawRing((Vector2){x+50,y+50},
-                                 30,36,0,360,64,BLUE);
+                                 30,36,0,360,64,oColor);
                     }
                 }
 }
@@ -385,46 +392,53 @@ void drawWinLine()
 
 void drawGameOver()
 {
+     if(!gameOver) return;  
+     
+     // Dark overlay background
+    DrawRectangle(200,
+                  UI_HEIGHT + 320,
+                  500,
+                  150,
+                  Fade(BLACK, 0.8f));
+
     if(winner == EMPTY)
-{
-    drawCentered("DRAW",
-                 UI_HEIGHT + 360,
-                 32,
-                 WHITE);
-}
-else if(gameMode == MODE_NORMAL)
-{
-    drawCentered(TextFormat("Player %c Wins!", winner),
-                 UI_HEIGHT + 360,
-                 32,
-                 WHITE);
-}
-else
-{
-    drawCentered(TextFormat("Player %c Loses!", winner),
-                 UI_HEIGHT + 360,
-                 32,
-                 WHITE);
-}
+    {
+        drawCentered("DRAW",
+                     UI_HEIGHT + 360,
+                     32,
+                     WHITE);
+    }
+    else if(gameMode == MODE_NORMAL)
+    {
+        drawCentered(TextFormat("Player %c Wins!", winner),
+                     UI_HEIGHT + 360,
+                     32,
+                     WHITE);
+    }
+    else
+    {
+        drawCentered(TextFormat("Player %c Loses!", winner),
+                     UI_HEIGHT + 360,
+                     32,
+                     WHITE);
+    }
 }
 
 void drawSwapPopup()
 {
     if(!showSwapPopup) return;
 
-    DrawRectangle(
-        200,
-        UI_HEIGHT + 300,
-        500,
-        150,
-        Fade(BLACK, 0.8f)
-    );
+   DrawRectangle(150,
+              UI_HEIGHT + 280,
+              600,
+              200,
+              Fade(BLACK, 0.85f));
 
     drawCentered(
         TextFormat("Player %c - Select Board to Swap",
                    currentPlayer),
         UI_HEIGHT + 340,
-        30,
+        32,
         ORANGE
     );
 }
@@ -575,6 +589,9 @@ if(swapAnimating)
 
     if(swapTimer >= swapDuration)
     {
+         printf("Swapping (%d,%d) with (%d,%d)\n",
+           swapSourceRow, swapSourceCol,
+           swapTargetRow, swapTargetCol);
         /* Swap bb */
         char tempBB =
             bb[swapTargetRow][swapTargetCol];
@@ -653,7 +670,7 @@ if(showSwapPopup)
             drawMenu();
         else
         {
-            ClearBackground(RAYWHITE);
+            ClearBackground((Color){235, 238, 245, 255});
             drawUI();
             drawBoard();
             drawBigBoardMarks();
