@@ -458,19 +458,39 @@ int main()
     InitWindow(SCREEN_SIZE,SCREEN_SIZE + UI_HEIGHT,
                "Strategic Tic Tac Toe");
     SetTargetFPS(60);
+    InitAudioDevice();
+    Sound moveSound     = LoadSound("move.ogg");
+Sound smallWinSound = LoadSound("smallwin.ogg");
+Sound bigWinSound   = LoadSound("bigwin.ogg");
+Sound swapSound     = LoadSound("swap.ogg");
+Sound menuSound     = LoadSound("menu.ogg");   
+Sound drawSound = LoadSound("draw.ogg");
+Sound loseSound = LoadSound("lose.ogg");
+//PlaySound(moveSound);
+
+
+SetSoundVolume(moveSound, 0.4f);
+SetSoundVolume(smallWinSound, 0.6f);
+SetSoundVolume(bigWinSound, 0.8f);
+SetSoundVolume(swapSound, 0.6f);
+SetSoundVolume(menuSound, 0.5f);
+SetSoundVolume(drawSound, 0.6f);
+SetSoundVolume(loseSound, 0.8f);
 
     while(!WindowShouldClose())
     {
         if(gameState==STATE_MENU)
         {
             if(IsKeyPressed(KEY_ONE))
-            {
+            {   
+                PlaySound(menuSound);
                 gameMode=MODE_NORMAL;
                 initialize();
                 gameState=STATE_PLAYING;
             }
             if(IsKeyPressed(KEY_TWO))
-            {
+            {  
+                PlaySound(menuSound);
                 gameMode=MODE_MISERE;
                 initialize();
                 gameState=STATE_PLAYING;
@@ -500,11 +520,14 @@ int main()
                sb[sbRow][sbCol][cRow][cCol] == EMPTY)
             {
                 sb[sbRow][sbCol][cRow][cCol] = currentPlayer;
+                printf("MOVE TRIGGERED\n");
+                PlaySound(moveSound);
 
                 /* Small win */
                 if(checkSmallWin(sbRow, sbCol))
                 {
                     bb[sbRow][sbCol] = currentPlayer;
+                    PlaySound(smallWinSound);
 
                     int canSwap =
                         (currentPlayer == 'X' && !xSwapUsed) ||
@@ -544,6 +567,7 @@ else
                 if(checkBigWin())
 {
     gameOver = 1;
+    PlaySound(bigWinSound);
 
     if(gameMode == MODE_NORMAL)
         winner = currentPlayer;
@@ -553,7 +577,8 @@ else
 else if(checkBigFull())
 {
     gameOver = 1;
-    winner = EMPTY;   // Means draw
+    winner = EMPTY; 
+    PlaySound(drawSound);     // Means draw
 }
 
 
@@ -596,6 +621,7 @@ if(swapAnimating)
 
     if(swapTimer >= swapDuration)
     {
+        PlaySound(swapSound);
          printf("Swapping (%d,%d) with (%d,%d)\n",
            swapSourceRow, swapSourceCol,
            swapTargetRow, swapTargetCol);
@@ -630,6 +656,7 @@ if(swapAnimating)
         winner = currentPlayer;
     else
         winner = (currentPlayer == 'X') ? 'O' : 'X';
+        PlaySound(loseSound);   // ← misere lose sound
 }
 
         /* Reset forced move after swap */
@@ -690,7 +717,14 @@ if(showSwapPopup)
 
         EndDrawing();
     }
-
+    UnloadSound(moveSound);
+UnloadSound(smallWinSound);
+UnloadSound(bigWinSound);
+UnloadSound(swapSound);
+UnloadSound(menuSound);
+UnloadSound(drawSound);
+UnloadSound(loseSound);
+    CloseAudioDevice();
     CloseWindow();
     return 0;
 }
