@@ -429,6 +429,17 @@ void drawGameOver()
                      32,
                      WHITE);
     }
+
+    drawCentered("Press R to Restart",
+             UI_HEIGHT + 410,
+             22,
+             LIGHTGRAY);
+
+    drawCentered("Press M to return to Menu",
+             UI_HEIGHT + 440,
+             22,
+             LIGHTGRAY);
+
 }
 
 void drawSwapPopup()
