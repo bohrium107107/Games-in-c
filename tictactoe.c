@@ -664,10 +664,14 @@ if(swapAnimating)
     gameOver = 1;
 
     if(gameMode == MODE_NORMAL)
+    {
         winner = currentPlayer;
-    else
+        PlaySound(bigWinSound);
+    }
+    else {
         winner = (currentPlayer == 'X') ? 'O' : 'X';
-        PlaySound(loseSound);   // ← misere lose sound
+        PlaySound(loseSound);   
+    }
 }
 
         /* Reset forced move after swap */
