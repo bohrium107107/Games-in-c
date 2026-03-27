@@ -54,4 +54,12 @@ When you win a small board:
 ## 🛠 Built With
 
 - C Language  
-- Raylib Graphics Library  
+- Raylib Graphics Library
+- By:
+1262251158  -  AKANKSHA DANGE
+1262251255  -  ISHITA KALE
+1262252018  -  ESHITA UCHGAONKAR
+1262253117  -  ANVESHA JAIN
+1262253453  -  ADHITTE NAIR
+1262254062  -  ANANYA BHALE
+
