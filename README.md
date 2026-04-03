@@ -1,4 +1,4 @@
-# 🎮 Strategic Tic Tac Toe
+#  Strategic Tic Tac Toe
 
 A custom Ultimate Tic Tac Toe variant built in C using Raylib.
 
@@ -6,18 +6,13 @@ A strategic twist on the classic game with board control, swap powers, and multi
 
 ---
 
-## 🚀 Features
-
+##  Features
+-  Forced Board Mechanic  
 -  Normal Mode  
 -  Misère Mode (3 in a row loses)  
--  One-time Board Swap   
--  Smooth Swap Animation  
--  Forced Board Mechanic  
--  Big Board Win Detection  
--  Clean UI with Turn & Swap Indicators  
-
+-  One-time Board Swap
+      
 ---
-
 ##  How It Works
 
 ###  Forced Board Rule
@@ -32,24 +27,13 @@ When you win a small board:
 
 ---
 
-## 🏁 Game Modes
+##  Game Modes
 
 | Mode   | Description |
 |--------|------------|
 | Normal | Get 3 big boards in a row to win |
 | Misère | Getting 3 in a row makes you lose |
 
----
-
-## 🕹 Controls
-
-- Mouse Click → Place mark  
-- 1 → Start Normal Mode  
-- 2 → Start Misère Mode  
-- R → Restart Game  
-- M → Return to Menu  
-
----
 
 ## 🛠 Built With
 
