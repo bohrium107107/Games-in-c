@@ -35,7 +35,7 @@ When you win a small board:
 | Misère | Getting 3 in a row makes you lose |
 
 
-## 🛠 Built With
+##  Built With
 
 - C Language  
 - Raylib Graphics Library
