@@ -4,7 +4,7 @@ A custom Ultimate Tic Tac Toe variant built in C using Raylib.
 
 A strategic twist on the classic game with board control, swap powers, and multiple game modes.
 
----
+
 
 ##  Features
 -  Forced Board Mechanic  
@@ -12,7 +12,7 @@ A strategic twist on the classic game with board control, swap powers, and multi
 -  Misère Mode (3 in a row loses)  
 -  One-time Board Swap
       
----
+
 ##  How It Works
 
 ###  Forced Board Rule
@@ -25,7 +25,7 @@ When you win a small board:
 - Each player can use this power only once per game.
 - Includes visual animation.
 
----
+
 
 ##  Game Modes
 
