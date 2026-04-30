@@ -53,3 +53,4 @@ When you win a small board:
 
       - 1262254062  -  ANANYA BHALE
 
+*Please install raylib and run the tictactoe.c file in the w64devkit terminal for easy running.
